@@ -1,6 +1,8 @@
 package com.techacademy;
 
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Locale;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 public class KadaiFirstController {
 
-    @GetMapping("/dayofweek/{today}")
-    public String dispDayOfWeek(@PathVariable int today) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEEEEE", Locale.US);
-        return sdf.format(today);
+    @GetMapping("/dayofweek/{dateStr}")
+    public String dispDayOfWeek(@PathVariable String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date date = sdf.parse(dateStr);
+            System.out.println(dateStr);
+            String dayOfWeek = new SimpleDateFormat("EEEEEEE", Locale.ENGLISH).format(date);
+            return dayOfWeek;
+        } catch (ParseException e) {
+            return "<h1>形式が違います。yyyymmddの形式でパラメータを送信してください。</h1>";
+        }
     }
 
     @GetMapping("plus/{val1}/{val2}")
